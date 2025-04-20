@@ -1,0 +1,43 @@
+# Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
+fos_elastica:
+    clients:
+        default: { host: 'elasticsearch', port: 9200 }
+
+    indexes:
+        product:
+            settings:
+                analysis:
+                    filter:
+                        fr_stemmer:
+                            type: stemmer
+                            language: light_french
+                        ngram_filter:
+                            type: edge_ngram
+                            min_gram: 2
+                            max_gram: 20
+                    analyzer:
+                        custom_ngram_analyzer:
+                            tokenizer: standard
+                            filter: [lowercase, asciifolding, fr_stemmer, ngram_filter]
+                        custom_search_analyzer:
+                            tokenizer: standard
+                            filter: [lowercase, asciifolding, fr_stemmer]
+
+            persistence:
+                driver: orm
+                model: App\Entity\Product
+                provider: ~
+                finder: ~
+                listener: ~
+                elastica_to_model_transformer:
+                    ignore_missing: true
+
+            properties:
+                designation:
+                    type: text
+                    analyzer: custom_ngram_analyzer
+                    search_analyzer: custom_search_analyzer
+                    fields:
+                        plain:
+                            type: text
+                            analyzer: custom_search_analyzer

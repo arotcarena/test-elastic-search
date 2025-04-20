@@ -1,0 +1,5 @@
+- faire marcher un projet symfony avec docker compose avec un container php et un container nginx
+- ajouter elastic search
+- faire des requetes avec elastic search
+- voir comment elastic search peut s'adapter à api platform
+- mettre elastic search sur iCommerce - d'abord pour le search_tool

@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body {
+            background-color: white;
+            padding: 20px 30px;
+        }
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
+            padding: 0 20px;
+        }
+        .search-form {
+            position: relative;
+            width: 100%;
+        }
+        .search-input {
+            width: 100%;
+            padding: 15px 30px;
+            border-radius: 30px;
+            border: 1px solid #dfe1e5;
+            font-size: 16px;
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+            transition: box-shadow 0.3s;
+        }
+        .search-input:hover,
+        .search-input:focus {
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.38);
+            outline: none;
+        }
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9aa0a6;
+            font-size: 20px;
+        }
+        .search-button {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgb(70, 70, 70);
+            color: #FFF;
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="search-container">
+        <div class="search-form">
+            <form method="GET" action="{{ path('app_search') }}">
+                <input type="text" 
+                       name="q" 
+                       class="search-input" 
+                       placeholder="Recherchez un produit..."
+                       value="{{ searchTerm }}"
+                       autofocus
+                >
+                <button type="submit" class="search-button">
+                    Rechercher
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div style="margin-left: 20px; font-weight: bold; font-size: 1.4em;">{{ products|length }} résultats</div>
+
+    <ul>
+        {% for product in products %}
+            <li>
+                {{ product.designation | search_highlight(searchTerm) | raw }} - {{ (product.price / 100)|number_format(2, ',', ' ') }} €
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %} 
