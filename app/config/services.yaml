@@ -28,3 +28,9 @@ services:
         public: true
         arguments:
             - '@fos_elastica.finder.product'
+
+    App\Command\PopulateProductsCommand:
+        tags: ['console.command']
+        public: true
+        arguments:
+            $client: '@api_platform.elasticsearch.client'
